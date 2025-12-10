@@ -1,16 +1,19 @@
-Merkle Tree Implementaion on Solana
+# Merkle Tree Implementation on Solana
 
-Storing thousands of accounts on solana require's paying huge amount of rent solana
+Storing thousands of accounts directly on Solana is expensive due to rent requirements.
 
-for 1000 accounts one need pay around 0.2 SOL in rent
+For example, storing **1000 addresses** (each 32 bytes) costs roughly **0.22 SOL** in rent:
 
-'''bash
+```bash
 > 1000 * 32
 32000
 > solana rent 32000
 Rent-exempt minimum: 0.22361088 SOL
-'''
+```
 
-one better way of solving this problem is to use merkle tree. 
-Instead of storing of all the accounts we just store 32 byte root hash
-Then we can prove the inclusion of address buy computing the hash of siblings from ground-up
+A better solution is to use a Merkle Tree.
+
+Instead of storing every address on-chain, we only store a single 32-byte Merkle root hash.
+To verify that an address is included, we provide a Merkle proof: the list of sibling hashes that allow the program to recompute the root from the leaf node.
+
+This saves substantial on-chain storage while still allowing secure inclusion verification.
